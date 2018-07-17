@@ -1,9 +1,9 @@
 import urllib.request
 import urllib.parse
-
+import re
 
 try:
-    imp = str(input('digite a pesquisa no piratbay'))
+    imp = str(input('digite a pesquisa no piratbay: '))
     url = 'https://thepiratebay.org/search'
     k= 0
     pesquisa = "";
@@ -19,19 +19,26 @@ try:
     headers = {}
     headers['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'
 
-    
-    dta = urllib.parse.urlencode(url)
-    dta = dta.encode('utf-8')
-    results = urllib.request.Request(url,, headers=headers)
+
+    results = urllib.request.Request(url, headers=headers)
+    print('linha1')
     resposta = urllib.request.urlopen(results)
+    print('linha1')
     texto = str(resposta.read())
-    magnetico = texto.find('"magnet:')
+    
     saveFile = open('codethe.txt', 'w')
-    print('linha1')
     saveFile.write(texto)
-    print('linha1')
     saveFile.close()
-    print('linha1')
+
+    link = re.findall(r'\w href="magnet(.*?)"\s', str(texto))
+
+    k = 0
+    soma = '"magnet'
+    
+    while k < len(link):
+        mag = soma + link[k] +'"'
+        print(mag,'\n')
+        k+=1
     
 except Exception as e:
     print(str(e)) 
